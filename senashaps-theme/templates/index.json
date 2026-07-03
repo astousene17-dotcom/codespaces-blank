@@ -1,0 +1,340 @@
+{
+    "sections": {
+        "hero-banner": {
+            "type": "hero-banner",
+            "settings": {
+                "label": "New Collection",
+                "heading": "Confidence Starts Underneath",
+                "subheading": "Premium shaping essentials designed to smooth, support, and celebrate every curve.",
+                "cta_text": "Shop Best Sellers",
+                "cta_url": "/collections/best-sellers",
+                "secondary_cta_text": "Explore Collections",
+                "secondary_cta_url": "/collections/all"
+            }
+        },
+        "category-tiles": {
+            "type": "category-tiles",
+            "blocks": {
+                "cat-bodysuits": {
+                    "type": "category",
+                    "settings": {
+                        "title": "Shapewear Bodysuits",
+                        "url": "/collections/bodysuits"
+                    }
+                },
+                "cat-bras": {
+                    "type": "category",
+                    "settings": {
+                        "title": "Seamless Bras",
+                        "url": "/collections/bras"
+                    }
+                },
+                "cat-underwear": {
+                    "type": "category",
+                    "settings": {
+                        "title": "Seamless Underwear",
+                        "url": "/collections/underwear"
+                    }
+                },
+                "cat-shorts": {
+                    "type": "category",
+                    "settings": {
+                        "title": "Sculpting Shorts",
+                        "url": "/collections/sculpting-shorts"
+                    }
+                },
+                "cat-sets": {
+                    "type": "category",
+                    "settings": {
+                        "title": "Matching Sets",
+                        "url": "/collections/sets"
+                    }
+                }
+            },
+            "block_order": [
+                "cat-bodysuits",
+                "cat-bras",
+                "cat-underwear",
+                "cat-shorts",
+                "cat-sets"
+            ],
+            "settings": {
+                "label": "Shop by Category",
+                "heading": "Find Your Fit"
+            }
+        },
+        "best-sellers": {
+            "type": "best-sellers",
+            "blocks": {
+                "prod-1": {
+                    "type": "product",
+                    "settings": {
+                        "title": "Signature Sculpt Bodysuit",
+                        "category": "Shapewear Bodysuit",
+                        "price": "$68.00"
+                    }
+                },
+                "prod-2": {
+                    "type": "product",
+                    "settings": {
+                        "title": "SmoothFit Seamless Bra",
+                        "category": "Seamless Bras",
+                        "price": "$42.00"
+                    }
+                },
+                "prod-3": {
+                    "type": "product",
+                    "settings": {
+                        "title": "CurveSoft High-Waist Brief",
+                        "category": "Seamless Underwear",
+                        "price": "$36.00"
+                    }
+                },
+                "prod-4": {
+                    "type": "product",
+                    "settings": {
+                        "title": "Everyday Confidence Set",
+                        "category": "Matching Sets",
+                        "price": "$118.00"
+                    }
+                }
+            },
+            "block_order": [
+                "prod-1",
+                "prod-2",
+                "prod-3",
+                "prod-4"
+            ],
+            "settings": {
+                "label": "Fan Favorites",
+                "heading": "Best Sellers",
+                "subheading": "Our most-loved shaping essentials, trusted by thousands of women.",
+                "button_text": "View All Best Sellers",
+                "button_url": "/collections/best-sellers"
+            }
+        },
+        "why-senashaps": {
+            "type": "why-senashaps",
+            "blocks": {
+                "why-1": {
+                    "type": "feature",
+                    "settings": {
+                        "icon": "shape",
+                        "title": "Smooths & Shapes",
+                        "text": "Advanced compression zones target your waist, tummy, hips, and thighs for a smooth, sculpted silhouette under any outfit."
+                    }
+                },
+                "why-2": {
+                    "type": "feature",
+                    "settings": {
+                        "icon": "fabric",
+                        "title": "Soft Seamless Fabric",
+                        "text": "77% Nylon, 23% Spandex blend that moves with you — buttery-soft, breathable, and completely invisible under clothes."
+                    }
+                },
+                "why-3": {
+                    "type": "feature",
+                    "settings": {
+                        "icon": "comfort",
+                        "title": "Everyday Comfort",
+                        "text": "Designed for all-day wear, from 9-to-5 to date night. No digging, no rolling, no adjusting — ever."
+                    }
+                },
+                "why-4": {
+                    "type": "feature",
+                    "settings": {
+                        "icon": "curves",
+                        "title": "Made for Every Curve",
+                        "text": "Available in sizes XS through 3XL, tested and perfected across a full range of body shapes and skin tones."
+                    }
+                }
+            },
+            "block_order": [
+                "why-1",
+                "why-2",
+                "why-3",
+                "why-4"
+            ],
+            "settings": {
+                "label": "Why We're Different",
+                "heading": "Why Senashaps",
+                "subheading": "Every piece is crafted with your comfort, confidence, and curves in mind."
+            }
+        },
+        "before-after": {
+            "type": "before-after",
+            "blocks": {
+                "ba-1": {
+                    "type": "comparison",
+                    "settings": {
+                        "outfit": "Under a Bodycon Dress",
+                        "description": "The Signature Sculpt Bodysuit creates a perfectly smooth, seamless finish under fitted dresses."
+                    }
+                },
+                "ba-2": {
+                    "type": "comparison",
+                    "settings": {
+                        "outfit": "Under Tailored Trousers",
+                        "description": "The CurveSoft High-Waist Brief eliminates visible lines for a clean, polished workwear look."
+                    }
+                },
+                "ba-3": {
+                    "type": "comparison",
+                    "settings": {
+                        "outfit": "Under a Silky Blouse",
+                        "description": "The SmoothFit Seamless Bra provides invisible lift and shape with zero lines or texture."
+                    }
+                }
+            },
+            "block_order": [
+                "ba-1",
+                "ba-2",
+                "ba-3"
+            ],
+            "settings": {
+                "label": "See the Difference",
+                "heading": "The Senashaps Effect",
+                "subheading": "See how our shaping essentials transform the way your outfits look and feel."
+            }
+        },
+        "bundle-offer": {
+            "type": "bundle-offer",
+            "blocks": {
+                "bundle-1": {
+                    "type": "bundle",
+                    "settings": {
+                        "badge": "Best Value",
+                        "name": "Everyday Confidence Set",
+                        "items": "Signature Sculpt Bodysuit, SmoothFit Seamless Bra, CurveSoft High-Waist Brief",
+                        "price": "$118.00",
+                        "compare_price": "$146.00",
+                        "savings": "$28",
+                        "cta": "Shop This Bundle",
+                        "url": "/collections/sets"
+                    }
+                },
+                "bundle-2": {
+                    "type": "bundle",
+                    "settings": {
+                        "featured": true,
+                        "badge": "Ultimate Collection",
+                        "name": "Full Sculpt Bundle",
+                        "items": "Signature Sculpt Bodysuit, SmoothFit Seamless Bra, CurveSoft High-Waist Brief, SculptEase Shaping Shorts",
+                        "price": "$154.00",
+                        "compare_price": "$184.00",
+                        "savings": "$30",
+                        "cta": "Shop This Bundle",
+                        "url": "/collections/sets"
+                    }
+                }
+            },
+            "block_order": [
+                "bundle-1",
+                "bundle-2"
+            ],
+            "settings": {
+                "label": "Bundle & Save",
+                "heading": "Complete Your Shape",
+                "subheading": "Build your ultimate shaping wardrobe and save more when you bundle."
+            }
+        },
+        "size-inclusivity": {
+            "type": "size-inclusivity",
+            "settings": {
+                "label": "Inclusive Sizing",
+                "heading": "Designed for Every Body",
+                "text": "We believe every woman deserves to feel confident and supported. Senashaps is designed and tested across a full range of sizes — from XS to 3XL — because your confidence has no size limit.",
+                "sizes": "XS, S, M, L, XL, XXL, 3XL"
+            }
+        },
+        "reviews": {
+            "type": "reviews",
+            "blocks": {
+                "r1": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Ashley T.",
+                        "product": "Signature Sculpt Bodysuit — Nude, M",
+                        "review": "This bodysuit is absolutely everything. It's so comfortable I forget I'm wearing it, and my waist looks incredible. I've already ordered two more colors."
+                    }
+                },
+                "r2": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Monique R.",
+                        "product": "CurveSoft High-Waist Brief — Black, L",
+                        "review": "Finally a brand that actually gets it. These briefs are perfectly seamless, don't roll down, and look amazing under every dress I own. I wear them every single day."
+                    }
+                },
+                "r3": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Destiny K.",
+                        "product": "Everyday Confidence Set — Dark Nude, XL",
+                        "review": "The whole set together is perfection. I feel so put-together and genuinely confident. Premium quality, true to size, and the fabric is buttery soft."
+                    }
+                },
+                "r4": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Tamara N.",
+                        "product": "SmoothFit Seamless Bra — Brown, 34C",
+                        "review": "Zero visible lines under my satin blouse. I've been searching for a bra like this for years. The brown shade is a perfect match for my skin tone."
+                    }
+                },
+                "r5": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Jasmine W.",
+                        "product": "SculptEase Shaping Shorts — Black, XXL",
+                        "review": "I ordered these for an event and honestly haven't taken them off since. They hold everything in without feeling tight. The thigh coverage is perfect."
+                    }
+                },
+                "r6": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Priya S.",
+                        "product": "Full Sculpt Bundle — Nude, S",
+                        "review": "Best purchase I've made in years. The bundle is incredible value, everything fits like a dream, and I feel so put-together. Senashaps has a customer for life."
+                    }
+                }
+            },
+            "block_order": [
+                "r1",
+                "r2",
+                "r3",
+                "r4",
+                "r5",
+                "r6"
+            ],
+            "settings": {
+                "label": "Customer Love",
+                "heading": "What Our Customers Say",
+                "overall_rating": "4.9",
+                "total_reviews": "2,400+"
+            }
+        },
+        "email-signup": {
+            "type": "email-signup",
+            "settings": {
+                "label": "Exclusive Offer",
+                "heading": "Join the Senashaps Confidence Club",
+                "subheading": "Get 10% off your first order plus early access to new drops and members-only offers.",
+                "placeholder": "Your email address",
+                "button_text": "Claim 10% Off",
+                "disclaimer": "By subscribing you agree to our Privacy Policy. Unsubscribe anytime."
+            }
+        }
+    },
+    "order": [
+        "hero-banner",
+        "category-tiles",
+        "best-sellers",
+        "why-senashaps",
+        "before-after",
+        "bundle-offer",
+        "size-inclusivity",
+        "reviews",
+        "email-signup"
+    ]
+}

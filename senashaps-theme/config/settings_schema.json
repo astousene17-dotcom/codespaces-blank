@@ -1,0 +1,64 @@
+[
+    {
+        "name": "theme_info",
+        "theme_name": "Senashaps",
+        "theme_version": "1.0.0",
+        "theme_author": "Senashaps Studio",
+        "theme_documentation_url": "",
+        "theme_support_url": ""
+    },
+    {
+        "name": "Logo & Favicon",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "logo",
+                "label": "Logo image"
+            },
+            {
+                "type": "image_picker",
+                "id": "favicon",
+                "label": "Favicon image",
+                "info": "32×32px PNG recommended"
+            }
+        ]
+    },
+    {
+        "name": "Colors",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Brand palette — edit in theme.css for full control"
+            },
+            {
+                "type": "paragraph",
+                "content": "Core colors: Cream #FAF6F1 · Beige #E8D5C4 · Sand #D4B896 · Nude #C4956A · Mocha #6B4F3F · Dark Mocha #4A3328"
+            }
+        ]
+    },
+    {
+        "name": "Social Media",
+        "settings": [
+            {
+                "type": "url",
+                "id": "social_instagram",
+                "label": "Instagram URL"
+            },
+            {
+                "type": "url",
+                "id": "social_tiktok",
+                "label": "TikTok URL"
+            },
+            {
+                "type": "url",
+                "id": "social_facebook",
+                "label": "Facebook URL"
+            },
+            {
+                "type": "url",
+                "id": "social_pinterest",
+                "label": "Pinterest URL"
+            }
+        ]
+    }
+]

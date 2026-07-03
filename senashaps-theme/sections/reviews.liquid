@@ -1,0 +1,160 @@
+<section class="reviews-section section-pad">
+  <div class="container">
+    <div class="reviews-section__header">
+      <span class="section-label">{{ section.settings.label }}</span>
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+      <div class="reviews-rating-row">
+        <span class="rating-number">{{ section.settings.overall_rating }}</span>
+        {% for i in (1..5) %}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        {% endfor %}
+        <span class="reviews-count">{{ section.settings.total_reviews }} reviews</span>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      {% for block in section.blocks %}
+        <div class="review-card" {{ block.shopify_attributes }}>
+          <div class="review-card__header">
+            <div class="review-card__stars" aria-label="5 out of 5 stars">
+              {% for i in (1..5) %}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              {% endfor %}
+            </div>
+            <div class="review-card__verified">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Verified
+            </div>
+          </div>
+
+          <p class="review-card__text">{{ block.settings.review }}</p>
+
+          <div class="review-card__author">
+            <div class="review-card__avatar" aria-hidden="true">{{ block.settings.name | upcase | slice: 0 }}</div>
+            <div>
+              <div class="review-card__name">{{ block.settings.name }}</div>
+              <div class="review-card__product">{{ block.settings.product }}</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "Customer Love"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "overall_rating",
+      "label": "Overall rating display",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "total_reviews",
+      "label": "Total review count display",
+      "default": "2,400+"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Ashley T."
+        },
+        {
+          "type": "text",
+          "id": "product",
+          "label": "Product purchased",
+          "default": "Signature Sculpt Bodysuit — Nude, M"
+        },
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review text",
+          "default": "This bodysuit is absolutely everything. It's so comfortable I forget I'm wearing it, and my waist looks incredible. I've already ordered two more colors."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "name": "Ashley T.",
+            "product": "Signature Sculpt Bodysuit — Nude, M",
+            "review": "This bodysuit is absolutely everything. It's so comfortable I forget I'm wearing it, and my waist looks incredible. I've already ordered two more colors."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Monique R.",
+            "product": "CurveSoft High-Waist Brief — Black, L",
+            "review": "Finally a brand that actually gets it. These briefs are perfectly seamless, don't roll down, and look amazing under every dress I own. I wear them every single day."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Destiny K.",
+            "product": "Everyday Confidence Set — Dark Nude, XL",
+            "review": "The whole set together is perfection. I feel so put-together and genuinely confident. Premium quality, true to size, and the fabric is buttery soft."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Tamara N.",
+            "product": "SmoothFit Seamless Bra — Brown, 34C",
+            "review": "Zero visible lines under my satin blouse. I've been searching for a bra like this for years. The brown shade is a perfect match for my skin tone too."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Jasmine W.",
+            "product": "SculptEase Shaping Shorts — Black, XXL",
+            "review": "I ordered these for an event and honestly haven't taken them off since. They hold everything in place without feeling tight, and the thigh coverage is perfect."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Priya S.",
+            "product": "Full Sculpt Bundle — Nude, S",
+            "review": "Best purchase I've made in years. The bundle is incredible value, everything fits like a dream, and I feel so put-together wearing it. Senashaps has a customer for life."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

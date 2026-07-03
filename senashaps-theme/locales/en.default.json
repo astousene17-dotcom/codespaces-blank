@@ -1,0 +1,64 @@
+{
+    "general": {
+        "search": {
+            "placeholder": "Search products…"
+        },
+        "pagination": {
+            "previous": "← Previous",
+            "next": "Next →"
+        }
+    },
+    "products": {
+        "product": {
+            "add_to_cart": "Add to Cart",
+            "sold_out": "Sold Out",
+            "unavailable": "Unavailable",
+            "buy_now": "Buy Now",
+            "quick_add": "Quick Add"
+        },
+        "general": {
+            "free_shipping": "Free shipping over $75",
+            "returns": "30-day returns",
+            "secure": "Secure checkout"
+        }
+    },
+    "cart": {
+        "general": {
+            "title": "Your Cart",
+            "empty": "Your cart is empty.",
+            "continue_shopping": "Continue Shopping",
+            "checkout": "Proceed to Checkout",
+            "item_count": {
+                "one": "{{ count }} item",
+                "other": "{{ count }} items"
+            }
+        }
+    },
+    "customer": {
+        "login": {
+            "title": "Sign In",
+            "email": "Email",
+            "password": "Password",
+            "submit": "Sign In",
+            "forgot_password": "Forgot your password?",
+            "create_account": "Create account"
+        },
+        "register": {
+            "title": "Create Account",
+            "first_name": "First name",
+            "last_name": "Last name",
+            "email": "Email",
+            "password": "Password",
+            "submit": "Create Account"
+        },
+        "account": {
+            "title": "My Account",
+            "orders": "Order History",
+            "logout": "Sign Out"
+        }
+    },
+    "newsletter": {
+        "success": "Thanks for joining the Senashaps Confidence Club! Check your email for your 10% off code.",
+        "error": "Something went wrong. Please try again."
+    }
+}

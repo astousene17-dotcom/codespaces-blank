@@ -1,0 +1,120 @@
+<header class="site-header" role="banner">
+  <div class="header-inner">
+
+    <!-- Logo -->
+    <div class="header-logo">
+      <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+        {% if section.settings.logo != blank %}
+          <img
+            src="{{ section.settings.logo | img_url: '220x' }}"
+            alt="{{ shop.name }}"
+            width="{{ section.settings.logo_width }}"
+            height="auto"
+            loading="eager"
+          >
+        {% else %}
+          {{ shop.name }}
+        {% endif %}
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="header-nav" role="navigation" aria-label="Main navigation">
+      <ul class="nav-list">
+        {% for link in linklists['main-menu'].links %}
+          <li>
+            <a class="nav-link{% if link.active %} nav-link--active{% endif %}" href="{{ link.url }}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </a>
+
+      <a href="{{ routes.account_url }}" class="header-icon-btn" aria-label="Account">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+
+      <a href="{{ routes.cart_url }}" class="header-icon-btn" aria-label="Cart ({{ cart.item_count }} items)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        {% if cart.item_count > 0 %}
+          <span class="cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <button class="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
+  <div class="mobile-nav-header">
+    <a href="{{ routes.root_url }}" class="header-logo" aria-label="{{ shop.name }} home">
+      {% if section.settings.logo != blank %}
+        <img src="{{ section.settings.logo | img_url: '160x' }}" alt="{{ shop.name }}" height="34" loading="lazy">
+      {% else %}
+        <span style="font-family:var(--font-heading);font-size:1.375rem;font-weight:700;color:var(--color-dark-mocha);">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+    <button class="mobile-nav-close" aria-label="Close navigation menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <div class="mobile-nav-links">
+    {% for link in linklists['main-menu'].links %}
+      <a class="mobile-nav-link" href="{{ link.url }}">{{ link.title }}</a>
+    {% endfor %}
+    <div style="padding:1.5rem 0.5rem;display:flex;flex-direction:column;gap:0.75rem;">
+      <a href="{{ routes.account_url }}" class="btn btn-secondary btn-full">My Account</a>
+    </div>
+  </div>
+</nav>
+<div class="header-overlay" aria-hidden="true"></div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 160
+    }
+  ]
+}
+{% endschema %}

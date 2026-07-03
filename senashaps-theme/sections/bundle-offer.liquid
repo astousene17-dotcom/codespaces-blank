@@ -1,0 +1,186 @@
+<section class="bundle-offer section-pad">
+  <div class="container">
+    <div class="bundle-offer__header">
+      <span class="section-label">{{ section.settings.label }}</span>
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="section-subtitle" style="margin-bottom:0;">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="bundle-offer__grid" style="margin-top:var(--sp-xl);">
+      {% for block in section.blocks %}
+        <div class="bundle-card {% if block.settings.featured %}bundle-card--featured{% endif %}" {{ block.shopify_attributes }}>
+          {% if block.settings.badge != blank %}
+            <div class="bundle-card__badge">{{ block.settings.badge }}</div>
+          {% endif %}
+
+          <div class="bundle-card__image">
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | img_url: '800x450', crop: 'center' }}"
+                alt="{{ block.settings.name }}"
+                loading="lazy" width="400" height="225"
+              >
+            {% else %}
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,var(--color-beige),var(--color-sand));"></div>
+            {% endif %}
+          </div>
+
+          <div class="bundle-card__content">
+            <h3 class="bundle-card__name">{{ block.settings.name }}</h3>
+
+            <div class="bundle-card__includes">
+              <span class="bundle-card__includes-label">Includes</span>
+              {% assign items = block.settings.items | split: ',' %}
+              {% for item in items %}
+                <div class="bundle-card__item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  {{ item | strip }}
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="bundle-card__pricing">
+              <span class="bundle-price">{{ block.settings.price }}</span>
+              {% if block.settings.compare_price != blank %}
+                <span class="bundle-price--compare">{{ block.settings.compare_price }}</span>
+              {% endif %}
+              {% if block.settings.savings != blank %}
+                <span class="bundle-savings">Save {{ block.settings.savings }}</span>
+              {% endif %}
+            </div>
+
+            <a href="{{ block.settings.url | default: '/collections/all' }}" class="btn btn-primary btn-full">
+              {{ block.settings.cta | default: 'Shop Bundle' }}
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bundle Offer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "Bundle & Save"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete Your Shape"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Build your ultimate shaping wardrobe and save more when you bundle."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured (adds border highlight)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "default": "Best Value"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Bundle name",
+          "default": "Everyday Confidence Set"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Items included (comma-separated)",
+          "default": "Signature Sculpt Bodysuit, SmoothFit Seamless Bra, CurveSoft High-Waist Brief"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Bundle price",
+          "default": "$118.00"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare-at price",
+          "default": "$146.00"
+        },
+        {
+          "type": "text",
+          "id": "savings",
+          "label": "Savings amount",
+          "default": "$28"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Button text",
+          "default": "Shop This Bundle"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Bundle URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bundle image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Offer",
+      "blocks": [
+        {
+          "type": "bundle",
+          "settings": {
+            "badge": "Best Value",
+            "name": "Everyday Confidence Set",
+            "items": "Signature Sculpt Bodysuit, SmoothFit Seamless Bra, CurveSoft High-Waist Brief",
+            "price": "$118.00",
+            "compare_price": "$146.00",
+            "savings": "$28",
+            "cta": "Shop This Bundle"
+          }
+        },
+        {
+          "type": "bundle",
+          "settings": {
+            "featured": true,
+            "badge": "Ultimate Collection",
+            "name": "Full Sculpt Bundle",
+            "items": "Signature Sculpt Bodysuit, SmoothFit Seamless Bra, CurveSoft High-Waist Brief, SculptEase Shaping Shorts",
+            "price": "$154.00",
+            "compare_price": "$184.00",
+            "savings": "$30",
+            "cta": "Shop This Bundle"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

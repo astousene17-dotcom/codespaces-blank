@@ -1,0 +1,152 @@
+<section class="why-section section-pad">
+  <div class="container">
+    <div class="why-section__header">
+      <span class="section-label">{{ section.settings.label }}</span>
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="section-subtitle">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="why-section__grid">
+      {% for block in section.blocks %}
+        <div class="why-block" {{ block.shopify_attributes }}>
+          <div class="why-block__icon" aria-hidden="true">
+            {% case block.settings.icon %}
+              {% when 'shape' %}
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              {% when 'fabric' %}
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
+                  <path d="M12 2c0 5.523-4.477 10-10 10"/>
+                  <path d="M12 2c0 5.523 4.477 10 10 10"/>
+                </svg>
+              {% when 'comfort' %}
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              {% when 'curves' %}
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                  <line x1="9" y1="9" x2="9.01" y2="9"/>
+                  <line x1="15" y1="9" x2="15.01" y2="9"/>
+                </svg>
+              {% when 'star' %}
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              {% else %}
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+            {% endcase %}
+          </div>
+          <h3 class="why-block__title">{{ block.settings.title }}</h3>
+          <p class="why-block__text">{{ block.settings.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Why Senashaps",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "Why We're Different"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Senashaps"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Every piece is crafted with your comfort, confidence, and curves in mind."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Block",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shape",   "label": "Heart / Shape" },
+            { "value": "fabric",  "label": "Fabric / Globe" },
+            { "value": "comfort", "label": "Comfort / Home" },
+            { "value": "curves",  "label": "Curves / Smile" },
+            { "value": "star",    "label": "Star" }
+          ],
+          "default": "shape"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Smooths & Shapes"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Advanced compression zones target your waist, tummy, hips, and thighs for a smooth, sculpted silhouette."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Senashaps",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "shape",
+            "title": "Smooths & Shapes",
+            "text": "Advanced compression zones target your waist, tummy, hips, and thighs for a smooth, sculpted silhouette under any outfit."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "fabric",
+            "title": "Soft Seamless Fabric",
+            "text": "77% Nylon, 23% Spandex blend that moves with you — buttery-soft, breathable, and completely invisible under clothes."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "comfort",
+            "title": "Everyday Comfort",
+            "text": "Designed for all-day wear, from 9-to-5 to date night. No digging, no rolling, no adjusting — ever."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "curves",
+            "title": "Made for Every Curve",
+            "text": "Available in sizes XS through 3XL, tested and perfected across a full range of body shapes and skin tones."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

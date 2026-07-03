@@ -1,0 +1,101 @@
+<section class="category-tiles section-pad">
+  <div class="container--wide">
+    {% if section.settings.label != blank or section.settings.heading != blank %}
+      <div class="category-tiles__header">
+        {% if section.settings.label != blank %}
+          <span class="section-label">{{ section.settings.label }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="category-tiles__grid">
+      {% for block in section.blocks %}
+        <a
+          href="{{ block.settings.url | default: '/collections/all' }}"
+          class="category-tile"
+          {{ block.shopify_attributes }}
+        >
+          {% if block.settings.image != blank %}
+            <img
+              class="category-tile__image"
+              src="{{ block.settings.image | img_url: '600x800', crop: 'center' }}"
+              alt="{{ block.settings.title }}"
+              loading="lazy"
+              width="300" height="400"
+            >
+          {% else %}
+            <div class="category-tile__image" style="background:linear-gradient(160deg,var(--color-beige),var(--color-sand));position:relative;width:100%;height:100%;"></div>
+          {% endif %}
+          <div class="category-tile__overlay"></div>
+          <div class="category-tile__content">
+            <span class="category-tile__name">{{ block.settings.title }}</span>
+            <span class="category-tile__cta">
+              Shop Now
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category Tiles",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Your Fit"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category name",
+          "default": "Shapewear Bodysuits"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category image",
+          "info": "Recommended: 600×800px portrait"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Tiles",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Shapewear Bodysuits", "url": "/collections/bodysuits" } },
+        { "type": "category", "settings": { "title": "Seamless Bras",       "url": "/collections/bras"      } },
+        { "type": "category", "settings": { "title": "Seamless Underwear",  "url": "/collections/underwear" } },
+        { "type": "category", "settings": { "title": "Sculpting Shorts",    "url": "/collections/sculpting-shorts" } },
+        { "type": "category", "settings": { "title": "Matching Sets",       "url": "/collections/sets"      } }
+      ]
+    }
+  ]
+}
+{% endschema %}

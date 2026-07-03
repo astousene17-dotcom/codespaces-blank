@@ -1,0 +1,115 @@
+{% assign bg = section.settings.background_image %}
+<section class="hero-banner">
+  <div class="hero-banner__bg"
+    {% if bg != blank %}
+      style="background-image: url('{{ bg | img_url: '2400x' }}')"
+    {% else %}
+      style="background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-beige) 55%, var(--color-sand) 100%)"
+    {% endif %}
+  ></div>
+
+  <div class="hero-banner__content">
+    <div class="hero-banner__inner">
+      {% if section.settings.label != blank %}
+        <span class="hero-banner__label">{{ section.settings.label }}</span>
+      {% endif %}
+
+      <h1 class="hero-banner__title">
+        {% if section.settings.heading_italic != blank %}
+          {{ section.settings.heading_italic | replace: section.settings.heading_italic_word, '<em>' | append: '</em>' }}
+        {% else %}
+          {{ section.settings.heading }}
+        {% endif %}
+      </h1>
+
+      {% if section.settings.subheading != blank %}
+        <p class="hero-banner__subtitle">{{ section.settings.subheading }}</p>
+      {% endif %}
+
+      <div class="hero-banner__actions">
+        {% if section.settings.cta_text != blank %}
+          <a href="{{ section.settings.cta_url }}" class="btn btn-primary">
+            {{ section.settings.cta_text }}
+          </a>
+        {% endif %}
+        {% if section.settings.secondary_cta_text != blank %}
+          <a href="{{ section.settings.secondary_cta_url }}" class="btn btn-secondary">
+            {{ section.settings.secondary_cta_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="hero-banner__trust">
+        <span class="hero-trust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Free shipping over $75
+        </span>
+        <span class="hero-trust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Sizes XS–3XL
+        </span>
+        <span class="hero-trust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          30-day returns
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "New Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Confidence Starts Underneath"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Premium shaping essentials designed to smooth, support, and celebrate every curve."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Primary button text",
+      "default": "Shop Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Primary button URL"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary button text",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_url",
+      "label": "Secondary button URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Recommended: 2400×1600px. Show diverse women wearing nude, brown, and black shapewear on a soft beige background."
+    }
+  ],
+  "presets": [
+    { "name": "Hero Banner" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,56 @@
+{% comment %}
+  Snippet: product-card.liquid
+  Usage: {% render 'product-card', product: product, badge: 'Best Seller' %}
+{% endcomment %}
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-card__image-wrap" aria-label="{{ product.title }}">
+    {% if product.featured_image %}
+      <img
+        class="product-card__image"
+        src="{{ product.featured_image | img_url: '600x800', crop: 'center' }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="lazy"
+        width="300" height="400"
+      >
+    {% else %}
+      <div style="width:100%;height:100%;background:linear-gradient(160deg,var(--color-beige),var(--color-sand));"></div>
+    {% endif %}
+
+    {% if product.available == false %}
+      <span class="product-card__badge" style="background:var(--color-text-light);">Sold Out</span>
+    {% elsif badge != blank %}
+      <span class="product-card__badge">{{ badge }}</span>
+    {% elsif product.compare_at_price > product.price %}
+      <span class="product-card__badge product-card__badge--sale">Sale</span>
+    {% endif %}
+
+    <div class="product-card__quick-add">
+      <button class="btn btn-light btn-full" style="padding:.625rem 1rem;font-size:.8125rem;" aria-label="Quick add {{ product.title }}">
+        Quick Add
+      </button>
+    </div>
+  </a>
+
+  <div class="product-card__info">
+    <span class="product-card__category">
+      {% for col in product.collections limit: 1 %}{{ col.title }}{% endfor %}
+    </span>
+    <a href="{{ product.url }}">
+      <h3 class="product-card__title">{{ product.title }}</h3>
+    </a>
+    <div class="product-card__swatches" aria-label="Available colors">
+      <span class="swatch swatch--black"     title="Black"     aria-label="Black"></span>
+      <span class="swatch swatch--nude"      title="Nude"      aria-label="Nude"></span>
+      <span class="swatch swatch--dark-nude" title="Dark Nude" aria-label="Dark Nude"></span>
+      <span class="swatch swatch--brown"     title="Brown"     aria-label="Brown"></span>
+    </div>
+    <div class="product-card__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="price--sale">{{ product.price | money }}</span>
+        <span class="price--original">{{ product.compare_at_price | money }}</span>
+      {% else %}
+        {{ product.price | money }}
+      {% endif %}
+    </div>
+  </div>
+</div>

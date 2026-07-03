@@ -1,0 +1,316 @@
+<div class="product-page">
+  <div class="container">
+    <div class="product-layout">
+
+      <!-- ── GALLERY ── -->
+      <div class="product-gallery">
+        <div class="gallery-main">
+          {% if product.featured_image %}
+            <img
+              id="gallery-main-image"
+              src="{{ product.featured_image | img_url: '1000x1333', crop: 'center' }}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              width="500" height="666"
+              loading="eager"
+            >
+          {% else %}
+            <div style="width:100%;height:100%;background:linear-gradient(160deg,var(--color-beige),var(--color-sand));"></div>
+          {% endif %}
+        </div>
+
+        {% if product.images.size > 1 %}
+          <div class="gallery-thumbs">
+            {% for image in product.images limit: 4 %}
+              <div
+                class="gallery-thumb {% if forloop.first %}is-active{% endif %}"
+                data-image-src="{{ image | img_url: '1000x1333', crop: 'center' }}"
+                role="button"
+                tabindex="0"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img
+                  src="{{ image | img_url: '300x400', crop: 'center' }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  loading="lazy" width="150" height="200"
+                >
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- ── PRODUCT INFO ── -->
+      <div class="product-info">
+
+        <!-- Breadcrumb -->
+        <nav class="product-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a> <span aria-hidden="true">/</span>
+          {% for col in product.collections limit: 1 %}
+            <a href="{{ col.url }}">{{ col.title }}</a> <span aria-hidden="true">/</span>
+          {% endfor %}
+          <span>{{ product.title }}</span>
+        </nav>
+
+        <span class="product-category">
+          {% for col in product.collections limit: 1 %}{{ col.title }}{% endfor %}
+        </span>
+
+        <h1 class="product-title">{{ product.title }}</h1>
+
+        <!-- Star Rating Row -->
+        <div class="product-reviews-row">
+          <div class="product-stars" aria-label="Rated 4.9 out of 5">
+            {% for i in (1..5) %}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            {% endfor %}
+          </div>
+          <span class="product-review-count">4.9 (247 reviews)</span>
+          <a href="#reviews" style="font-size:.8125rem;color:var(--color-mocha);text-decoration:underline;">Read reviews</a>
+        </div>
+
+        <!-- Price -->
+        <div class="product-price" aria-live="polite">
+          {% if product.compare_at_price > product.price %}
+            <span class="price--sale">{{ product.price | money }}</span>
+            <span class="price--original" style="font-size:1.25rem;margin-left:.625rem;text-decoration:line-through;color:var(--color-text-light);font-family:var(--font-body);font-weight:400;">{{ product.compare_at_price | money }}</span>
+          {% else %}
+            {{ product.price | money }}
+          {% endif %}
+        </div>
+
+        <!-- Product Form -->
+        {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="variant-id">
+
+          <!-- Color Selector -->
+          {% assign color_option = nil %}
+          {% assign size_option  = nil %}
+          {% for option in product.options_with_values %}
+            {% if option.name == 'Color' or option.name == 'Colour' %}
+              {% assign color_option = option %}
+            {% endif %}
+            {% if option.name == 'Size' %}
+              {% assign size_option = option %}
+            {% endif %}
+          {% endfor %}
+
+          {% if color_option %}
+            <div class="variant-group">
+              <div class="variant-label">
+                Color:
+                <span data-selected-color>{{ color_option.selected_value }}</span>
+              </div>
+              <div class="color-swatches-lg">
+                {% for val in color_option.values %}
+                  {% assign swatch_bg = '' %}
+                  {% case val %}
+                    {% when 'Black'     %}{% assign swatch_bg = '#1A1A1A' %}
+                    {% when 'Nude'      %}{% assign swatch_bg = '#C4956A' %}
+                    {% when 'Dark Nude' %}{% assign swatch_bg = '#8B6347' %}
+                    {% when 'Brown'     %}{% assign swatch_bg = '#4A3328' %}
+                  {% endcase %}
+                  <div
+                    class="color-swatch-lg {% if val == color_option.selected_value %}is-active{% endif %}"
+                    data-value="{{ val }}"
+                    role="radio"
+                    aria-checked="{{ val == color_option.selected_value }}"
+                    tabindex="0"
+                  >
+                    <div class="color-swatch-lg__dot" style="background-color:{{ swatch_bg }};"></div>
+                    <span class="color-swatch-lg__name">{{ val }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Size Selector -->
+          {% if size_option %}
+            <div class="variant-group">
+              <div class="variant-label">
+                Size: <span data-selected-size>{{ size_option.selected_value }}</span>
+                <a href="/pages/size-guide">Size Guide</a>
+              </div>
+              <div class="size-selector">
+                {% for val in size_option.values %}
+                  {% assign is_available = false %}
+                  {% for variant in product.variants %}
+                    {% if variant.title contains val and variant.available %}
+                      {% assign is_available = true %}
+                    {% endif %}
+                  {% endfor %}
+                  <button
+                    type="button"
+                    class="size-btn {% if val == size_option.selected_value %}is-active{% endif %} {% unless is_available %}is-unavailable{% endunless %}"
+                    data-value="{{ val }}"
+                    aria-pressed="{{ val == size_option.selected_value }}"
+                    {% unless is_available %}aria-label="{{ val }} — sold out" disabled{% endunless %}
+                  >{{ val }}</button>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Quantity -->
+          <div class="qty-row">
+            <span class="qty-label">Qty</span>
+            <div class="qty-wrap">
+              <button type="button" class="qty-btn" data-action="minus" aria-label="Decrease quantity">−</button>
+              <input type="number" class="qty-input" name="quantity" value="1" min="1" aria-label="Quantity">
+              <button type="button" class="qty-btn" data-action="plus" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="product-actions">
+            <button
+              type="submit"
+              name="add"
+              class="btn btn-primary btn-full"
+              {% unless product.available %}disabled aria-label="Sold out"{% endunless %}
+            >
+              {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+            </button>
+            <a href="/checkout" class="btn btn-dark btn-full">Buy Now</a>
+          </div>
+
+        {% endform %}
+
+        <!-- Trust Bar -->
+        <div class="product-trust-bar">
+          <div class="product-trust-item">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Free shipping over $75
+          </div>
+          <div class="product-trust-item">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            30-day returns
+          </div>
+          <div class="product-trust-item">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Secure checkout
+          </div>
+          <div class="product-trust-item">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Quality guaranteed
+          </div>
+        </div>
+
+        <!-- Accordion Details -->
+        <div class="product-accordion">
+
+          <!-- Product Description -->
+          <div class="accordion-item is-open">
+            <button class="accordion-trigger" aria-expanded="true" aria-controls="acc-desc">
+              Product Description
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="accordion-content" id="acc-desc">
+              {% if product.description != blank %}
+                {{ product.description }}
+              {% else %}
+                <p>{{ product.title }} is crafted with premium-grade seamless fabric that smooths, shapes, and supports your silhouette with effortless confidence. Designed for all-day wear — buttery-soft, invisible under clothing, and built to celebrate every curve.</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Fit & Details -->
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-fit">
+              Fit & Details
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="accordion-content" id="acc-fit">
+              <ul>
+                <li>Designed for a second-skin fit that smooths and shapes without restricting movement</li>
+                <li>High-waist design for tummy control and waist definition</li>
+                <li>Medium compression — firm enough to shape, comfortable enough for all-day wear</li>
+                <li>Seamless construction for a completely invisible finish under any outfit</li>
+                <li>Available in Black, Nude, Dark Nude, and Brown to complement every skin tone</li>
+                <li>True-to-size — order your regular size; see size guide if between sizes</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Fabric & Care -->
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-fabric">
+              Fabric & Care
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="accordion-content" id="acc-fabric">
+              <ul>
+                <li><strong>Fabric composition:</strong> 77% Nylon, 23% Spandex</li>
+                <li>Buttery-soft, breathable, and moisture-wicking</li>
+                <li>Naturally anti-odour and quick-drying</li>
+                <li>Machine wash cold on a gentle/delicate cycle</li>
+                <li>Do not tumble dry — lay flat or hang to dry</li>
+                <li>Do not bleach or iron</li>
+                <li>Hand washing recommended to extend garment life</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Shipping & Returns -->
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-shipping">
+              Shipping & Returns
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="accordion-content" id="acc-shipping">
+              <ul>
+                <li>Free standard shipping on all orders over $75</li>
+                <li>Standard shipping: 5–7 business days</li>
+                <li>Express shipping: 2–3 business days (charged at checkout)</li>
+                <li>Returns accepted within 30 days of delivery</li>
+                <li>Items must be unworn, unwashed, with original tags attached</li>
+                <li>Intimates (briefs) are final sale for hygiene reasons unless defective</li>
+              </ul>
+              <p style="margin-top:.75rem;">
+                <a href="/pages/shipping-policy">View full Shipping & Returns policy →</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Size Guide -->
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-size">
+              Size Guide
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="accordion-content" id="acc-size">
+              <table>
+                <thead>
+                  <tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hip</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>XS</td><td>31–32"</td><td>24–25"</td><td>33–34"</td></tr>
+                  <tr><td>S</td><td>33–34"</td><td>26–27"</td><td>35–36"</td></tr>
+                  <tr><td>M</td><td>35–37"</td><td>28–30"</td><td>37–39"</td></tr>
+                  <tr><td>L</td><td>38–40"</td><td>31–33"</td><td>40–42"</td></tr>
+                  <tr><td>XL</td><td>41–43"</td><td>34–37"</td><td>43–45"</td></tr>
+                  <tr><td>XXL</td><td>44–47"</td><td>38–41"</td><td>46–49"</td></tr>
+                  <tr><td>3XL</td><td>48–51"</td><td>42–45"</td><td>50–53"</td></tr>
+                </tbody>
+              </table>
+              <p style="margin-top:.75rem;font-size:.875rem;">All measurements in inches. If between sizes, size up for comfort.</p>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div><!-- /product-info -->
+    </div><!-- /product-layout -->
+  </div><!-- /container -->
+</div><!-- /product-page -->
