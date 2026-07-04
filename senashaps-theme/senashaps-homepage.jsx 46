@@ -1,0 +1,488 @@
+import { useState } from "react";
+
+const COLORS = {
+  cream: "#FAF7F2",
+  nude: "#E8D5C0",
+  nudeDeep: "#D4B896",
+  mocha: "#6B4C35",
+  mochaDark: "#3D2B1A",
+  sand: "#C8A882",
+  white: "#FFFFFF",
+  black: "#1A1410",
+  charcoal: "#2C2318",
+  warmGray: "#8C7B6B",
+  lightBeige: "#F2EBE0",
+  accent: "#A0714F",
+};
+
+const PRODUCTS = [
+  { name: "Signature Sculpt Bodysuit", price: "$58", tag: "Best Seller", cat: "Bodysuit", emoji: "🖤" },
+  { name: "SmoothFit Seamless Bra", price: "$38", tag: "Fan Favourite", cat: "Seamless Bra", emoji: "✨" },
+  { name: "CurveSoft High-Waist Brief", price: "$28", tag: "Top Rated", cat: "Underwear", emoji: "💫" },
+  { name: "Everyday Confidence Set", price: "$108", tag: "Best Value", cat: "Bundle", emoji: "🌟" },
+];
+
+const CATEGORIES = [
+  { name: "Shapewear\nBodysuits", handle: "shapewear-bodysuits", bg: COLORS.mochaDark, color: "#FAF7F2" },
+  { name: "Seamless\nBras", handle: "seamless-bras", bg: COLORS.nudeDeep, color: "#3D2B1A" },
+  { name: "Seamless\nUnderwear", handle: "seamless-underwear", bg: COLORS.nude, color: "#3D2B1A" },
+  { name: "Sculpting\nShorts", handle: "sculpting-shorts", bg: COLORS.mocha, color: "#FAF7F2" },
+  { name: "Matching\nSets", handle: "matching-sets", bg: COLORS.sand, color: "#1A1410" },
+];
+
+const REVIEWS = [
+  { name: "Amara J.", stars: 5, text: "I wore the Sculpt Bodysuit under my wedding dress and I felt absolutely incredible. Zero lines, zero discomfort — just pure confidence all night long.", size: "M / Nude", verified: true },
+  { name: "Tiffany R.", stars: 5, text: "I've tried every shapewear brand out there and nothing compares. The fabric is so soft and it actually stays in place. I bought three more in different colors.", size: "L / Black", verified: true },
+  { name: "Destiny M.", stars: 5, text: "Finally a brand that makes nude options that actually match darker skin tones. The Dark Nude colorway is everything. Senashaps gets it.", size: "XL / Dark Nude", verified: true },
+  { name: "Priya K.", stars: 5, text: "The SmoothFit Bra changed my life. No more bra straps showing, no more discomfort. I wear it every single day.", size: "S / Nude", verified: true },
+];
+
+const WHY = [
+  { icon: "◈", title: "Smooths & Shapes", desc: "Targeted compression panels that sculpt without squeezing — your natural curves, refined." },
+  { icon: "◇", title: "Soft Seamless Fabric", desc: "77% Nylon, 23% Spandex — a second-skin blend so light you'll forget you're wearing it." },
+  { icon: "○", title: "Everyday Comfort", desc: "Designed for all-day wear. From the office to date night, shapewear that goes where you go." },
+  { icon: "◎", title: "Made for Every Curve", desc: "Sizes XS to 3XL. Four skin-tone shades. Because confidence belongs to everyone." },
+];
+
+const SIZES = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
+
+const NAV_LINKS = ["Shop All", "Bodysuits", "Bras", "Underwear", "Sets", "Size Guide", "About", "Contact"];
+
+function StarRating({ stars }) {
+  return (
+    <span style={{ color: COLORS.sand, letterSpacing: "2px", fontSize: "14px" }}>
+      {"★".repeat(stars)}{"☆".repeat(5 - stars)}
+    </span>
+  );
+}
+
+export default function SenashapsHomepage() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hoveredProduct, setHoveredProduct] = useState(null);
+  const [hoveredCat, setHoveredCat] = useState(null);
+
+  return (
+    <div style={{ fontFamily: "'Georgia', serif", background: COLORS.cream, color: COLORS.black, minHeight: "100vh", overflowX: "hidden" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { -webkit-font-smoothing: antialiased; }
+        .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+        .sans { font-family: 'Jost', system-ui, sans-serif; }
+        .nav-link { transition: color 0.2s; cursor: pointer; }
+        .nav-link:hover { color: ${COLORS.accent}; }
+        .cat-tile { transition: transform 0.35s cubic-bezier(.25,.8,.25,1), box-shadow 0.35s; cursor: pointer; }
+        .cat-tile:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        .product-card { transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(61,43,26,0.12); }
+        .btn-primary { background: ${COLORS.mochaDark}; color: ${COLORS.cream}; border: none; cursor: pointer; letter-spacing: 2px; text-transform: uppercase; transition: background 0.25s, transform 0.2s; font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500; padding: 14px 36px; }
+        .btn-primary:hover { background: ${COLORS.mocha}; transform: translateY(-1px); }
+        .btn-outline { background: transparent; color: ${COLORS.mochaDark}; border: 1px solid ${COLORS.mochaDark}; cursor: pointer; letter-spacing: 2px; text-transform: uppercase; transition: all 0.25s; font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500; padding: 13px 32px; }
+        .btn-outline:hover { background: ${COLORS.mochaDark}; color: ${COLORS.cream}; }
+        .size-pill { border: 1px solid ${COLORS.nudeDeep}; background: transparent; color: ${COLORS.charcoal}; padding: 8px 16px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 1px; transition: all 0.2s; cursor: pointer; }
+        .size-pill:hover { background: ${COLORS.mochaDark}; color: ${COLORS.cream}; border-color: ${COLORS.mochaDark}; }
+        .accordion-item { border-bottom: 1px solid ${COLORS.nudeDeep}; }
+        .accordion-btn { width: 100%; background: none; border: none; padding: 16px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: ${COLORS.charcoal}; }
+        .accordion-btn:hover { color: ${COLORS.accent}; }
+        input[type="email"] { font-family: 'Jost', sans-serif; }
+        .divider-line { width: 40px; height: 1px; background: ${COLORS.sand}; margin: 0 auto 20px; }
+        .scroll-fade { animation: fadeUp 0.6s ease both; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .why-icon { width: 56px; height: 56px; border: 1px solid ${COLORS.nudeDeep}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: ${COLORS.mocha}; margin: 0 auto 20px; }
+        .review-card { background: white; padding: 36px 32px; border-bottom: 3px solid ${COLORS.nudeDeep}; }
+      `}</style>
+
+      {/* ── Announcement Bar ── */}
+      <div style={{ background: COLORS.mochaDark, color: COLORS.cream, textAlign: "center", padding: "10px 16px", fontFamily: "'Jost', sans-serif", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase" }}>
+        Free shipping on orders over $75 · Use code WELCOME10 for 10% off your first order
+      </div>
+
+      {/* ── Navigation ── */}
+      <nav style={{ background: COLORS.cream, borderBottom: `1px solid ${COLORS.nude}`, position: "sticky", top: 0, zIndex: 100 }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px", height: "70px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          {/* Logo */}
+          <div className="serif" style={{ fontSize: "22px", fontWeight: "300", letterSpacing: "6px", textTransform: "uppercase", color: COLORS.mochaDark, cursor: "pointer" }}>
+            SENASHAPS
+          </div>
+          {/* Nav links */}
+          <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
+            {NAV_LINKS.map(link => (
+              <span key={link} className="nav-link sans" style={{ fontSize: "11px", letterSpacing: "1.5px", textTransform: "uppercase", color: COLORS.charcoal, fontWeight: "400" }}>
+                {link}
+              </span>
+            ))}
+          </div>
+          {/* Icons */}
+          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+            <span style={{ fontSize: "18px", cursor: "pointer" }}>♡</span>
+            <span style={{ fontSize: "18px", cursor: "pointer" }}>◉</span>
+            <span style={{ fontSize: "18px", cursor: "pointer", position: "relative" }}>
+              ⊠
+              <span style={{ position: "absolute", top: "-6px", right: "-8px", background: COLORS.mochaDark, color: COLORS.cream, borderRadius: "50%", width: "14px", height: "14px", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Jost" }}>0</span>
+            </span>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── 1. Hero Banner ── */}
+      <section style={{ background: `linear-gradient(135deg, ${COLORS.lightBeige} 0%, ${COLORS.nude} 50%, ${COLORS.nudeDeep} 100%)`, minHeight: "92vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden" }}>
+        {/* Subtle texture overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 80% at 70% 50%, rgba(107,76,53,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+        {/* Abstract shape */}
+        <div style={{ position: "absolute", right: "-80px", top: "50%", transform: "translateY(-50%)", width: "520px", height: "520px", borderRadius: "50%", background: `radial-gradient(circle, ${COLORS.mocha}18 0%, transparent 70%)`, pointerEvents: "none" }} />
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px", width: "100%" }}>
+          <div style={{ maxWidth: "600px" }}>
+            <p className="sans" style={{ fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.mocha, marginBottom: "24px", fontWeight: "400" }}>Premium Shapewear Essentials</p>
+            <h1 className="serif" style={{ fontSize: "clamp(52px, 7vw, 88px)", fontWeight: "300", lineHeight: "1.05", color: COLORS.mochaDark, marginBottom: "28px", letterSpacing: "-1px" }}>
+              Confidence<br /><em style={{ fontStyle: "italic", color: COLORS.accent }}>Starts</em><br />Underneath
+            </h1>
+            <p className="sans" style={{ fontSize: "17px", color: COLORS.warmGray, lineHeight: "1.75", marginBottom: "44px", fontWeight: "300", maxWidth: "440px" }}>
+              Premium shaping essentials designed to smooth, support, and celebrate every curve. Invisible under clothes. Undeniable in how you feel.
+            </p>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <button className="btn-primary">Shop Best Sellers</button>
+              <button className="btn-outline">Explore Collections</button>
+            </div>
+            <div style={{ display: "flex", gap: "32px", marginTop: "48px" }}>
+              {[["10K+", "Happy Women"], ["4.9★", "Average Rating"], ["XS–3XL", "Size Range"]].map(([val, lbl]) => (
+                <div key={lbl}>
+                  <div className="serif" style={{ fontSize: "22px", color: COLORS.mochaDark, fontWeight: "400" }}>{val}</div>
+                  <div className="sans" style={{ fontSize: "10px", letterSpacing: "1.5px", color: COLORS.warmGray, textTransform: "uppercase", marginTop: "4px" }}>{lbl}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* Right side visual placeholder */}
+        <div style={{ position: "absolute", right: "5%", top: "50%", transform: "translateY(-50%)", width: "380px", height: "520px", borderRadius: "200px 200px 200px 200px", background: `linear-gradient(160deg, ${COLORS.nudeDeep} 0%, ${COLORS.mocha} 100%)`, opacity: 0.3, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="sans" style={{ color: COLORS.cream, fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", opacity: 0.8, textAlign: "center" }}>Add your<br />hero image<br />here</div>
+        </div>
+      </section>
+
+      {/* ── 2. Category Tiles ── */}
+      <section style={{ background: COLORS.white, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
+            <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "12px" }}>Shop by Category</p>
+            <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: "300", color: COLORS.mochaDark, letterSpacing: "-0.5px" }}>
+              Find Your Essential
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "16px" }}>
+            {CATEGORIES.map((cat, i) => (
+              <div key={cat.handle} className="cat-tile" style={{ background: cat.bg, aspectRatio: "3/4", borderRadius: "120px 120px 8px 8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", padding: "28px 16px", cursor: "pointer" }}>
+                <div style={{ width: "40px", height: "1px", background: cat.color, opacity: 0.4, marginBottom: "16px" }} />
+                <p className="serif" style={{ color: cat.color, fontSize: "17px", fontWeight: "400", textAlign: "center", whiteSpace: "pre-line", lineHeight: "1.3", marginBottom: "8px" }}>{cat.name}</p>
+                <p className="sans" style={{ color: cat.color, fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", opacity: 0.7 }}>Shop Now →</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. Best Sellers ── */}
+      <section style={{ background: COLORS.cream, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
+            <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "12px" }}>Curated for You</p>
+            <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: "300", color: COLORS.mochaDark }}>Best Sellers</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "24px" }}>
+            {PRODUCTS.map((product, i) => (
+              <div key={product.name} className="product-card" onMouseEnter={() => setHoveredProduct(i)} onMouseLeave={() => setHoveredProduct(null)}>
+                {/* Product image area */}
+                <div style={{ background: i % 2 === 0 ? `linear-gradient(160deg, ${COLORS.nudeDeep}, ${COLORS.sand})` : `linear-gradient(160deg, ${COLORS.mochaDark}, ${COLORS.mocha})`, aspectRatio: "3/4", borderRadius: "4px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", padding: "24px 20px", position: "relative", overflow: "hidden" }}>
+                  <span style={{ position: "absolute", top: "16px", left: "16px", background: COLORS.cream, color: COLORS.mochaDark, fontFamily: "Jost", fontSize: "9px", letterSpacing: "1.5px", textTransform: "uppercase", padding: "5px 10px" }}>{product.tag}</span>
+                  <div style={{ fontSize: "42px", marginBottom: "8px", opacity: 0.6 }}>{product.emoji}</div>
+                  <p className="sans" style={{ color: "rgba(255,255,255,0.6)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px" }}>Add your product image</p>
+                  {hoveredProduct === i && (
+                    <div style={{ position: "absolute", inset: 0, background: "rgba(61,43,26,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <button className="btn-primary" style={{ fontSize: "10px", padding: "12px 24px" }}>Quick Shop</button>
+                    </div>
+                  )}
+                </div>
+                <div style={{ padding: "20px 4px 0" }}>
+                  <p className="sans" style={{ fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "6px" }}>{product.cat}</p>
+                  <p className="serif" style={{ fontSize: "18px", fontWeight: "400", color: COLORS.mochaDark, marginBottom: "8px" }}>{product.name}</p>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <p className="sans" style={{ fontSize: "15px", color: COLORS.mocha, fontWeight: "400" }}>{product.price}</p>
+                    <div style={{ display: "flex", gap: "6px" }}>
+                      {[COLORS.nudeDeep, COLORS.mochaDark, "#8B7355", COLORS.black].map((c, j) => (
+                        <div key={j} style={{ width: "14px", height: "14px", borderRadius: "50%", background: c, border: `1px solid ${COLORS.nudeDeep}` }} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: "center", marginTop: "52px" }}>
+            <button className="btn-outline">View All Products</button>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4. Why Senashaps ── */}
+      <section style={{ background: COLORS.mochaDark, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "64px" }}>
+            <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.sand, marginBottom: "12px" }}>The Senashaps Difference</p>
+            <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: "300", color: COLORS.cream }}>
+              Shapewear That Works<br /><em>As Hard As You Do</em>
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "48px" }}>
+            {WHY.map(item => (
+              <div key={item.title} style={{ textAlign: "center" }}>
+                <div className="why-icon" style={{ borderColor: COLORS.sand + "60" }}>
+                  <span style={{ color: COLORS.sand, fontSize: "18px" }}>{item.icon}</span>
+                </div>
+                <h3 className="serif" style={{ fontSize: "20px", fontWeight: "400", color: COLORS.cream, marginBottom: "14px" }}>{item.title}</h3>
+                <p className="sans" style={{ fontSize: "14px", color: COLORS.nudeDeep, lineHeight: "1.75", fontWeight: "300" }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. Before & After ── */}
+      <section style={{ background: COLORS.lightBeige, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
+            <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "12px" }}>The Results</p>
+            <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: "300", color: COLORS.mochaDark }}>
+              See the Difference
+            </h2>
+            <p className="sans" style={{ fontSize: "15px", color: COLORS.warmGray, marginTop: "16px", maxWidth: "500px", margin: "16px auto 0", lineHeight: "1.7", fontWeight: "300" }}>
+              The Senashaps effect — a smoother, more sculpted silhouette, instantly.
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2px", borderRadius: "8px", overflow: "hidden" }}>
+            {[["Without Senashaps", COLORS.nude, "Natural"], ["With Senashaps", COLORS.mochaDark, "Sculpted"], ["Under a Dress", COLORS.mocha, "Seamless"]].map(([label, bg, sub]) => (
+              <div key={label} style={{ background: bg, height: "460px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", padding: "32px 24px", position: "relative" }}>
+                <div style={{ position: "absolute", top: "20px", left: "50%", transform: "translateX(-50%)", background: "rgba(255,255,255,0.15)", backdropFilter: "blur(4px)", padding: "6px 16px", whiteSpace: "nowrap" }}>
+                  <span className="sans" style={{ color: COLORS.cream, fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase" }}>{sub}</span>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <p className="sans" style={{ color: "rgba(255,255,255,0.5)", fontSize: "9px", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px" }}>Add your image</p>
+                  <p className="serif" style={{ color: COLORS.cream, fontSize: "18px", fontWeight: "300" }}>{label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. Bundle Offer ── */}
+      <section style={{ background: COLORS.white, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
+            <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "12px" }}>Bundle & Save</p>
+            <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: "300", color: COLORS.mochaDark }}>Complete Your Shape</h2>
+            <p className="sans" style={{ fontSize: "15px", color: COLORS.warmGray, marginTop: "16px", fontWeight: "300" }}>Everything works better together.</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+            {/* Bundle 1 */}
+            <div style={{ border: `1px solid ${COLORS.nudeDeep}`, borderRadius: "4px", padding: "44px 40px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
+                <div>
+                  <p className="sans" style={{ fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "8px" }}>3-piece set</p>
+                  <h3 className="serif" style={{ fontSize: "26px", fontWeight: "400", color: COLORS.mochaDark }}>Everyday Confidence Set</h3>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p className="sans" style={{ fontSize: "11px", color: COLORS.warmGray, textDecoration: "line-through" }}>$124</p>
+                  <p className="serif" style={{ fontSize: "28px", color: COLORS.mocha, fontWeight: "400" }}>$108</p>
+                </div>
+              </div>
+              <div style={{ borderTop: `1px solid ${COLORS.nude}`, paddingTop: "24px", marginBottom: "32px" }}>
+                {["Signature Sculpt Bodysuit", "SmoothFit Seamless Bra", "CurveSoft High-Waist Brief"].map(item => (
+                  <div key={item} style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: COLORS.sand, flexShrink: 0 }} />
+                    <span className="sans" style={{ fontSize: "14px", color: COLORS.charcoal, fontWeight: "300" }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="btn-primary" style={{ width: "100%" }}>Shop This Set</button>
+            </div>
+            {/* Bundle 2 */}
+            <div style={{ background: COLORS.mochaDark, borderRadius: "4px", padding: "44px 40px", position: "relative" }}>
+              <div style={{ position: "absolute", top: "-12px", left: "40px", background: COLORS.sand, padding: "5px 16px" }}>
+                <span className="sans" style={{ fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.mochaDark }}>Best Value</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
+                <div>
+                  <p className="sans" style={{ fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.sand, marginBottom: "8px" }}>4-piece set</p>
+                  <h3 className="serif" style={{ fontSize: "26px", fontWeight: "400", color: COLORS.cream }}>Full Sculpt Bundle</h3>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p className="sans" style={{ fontSize: "11px", color: COLORS.nudeDeep, textDecoration: "line-through" }}>$168</p>
+                  <p className="serif" style={{ fontSize: "28px", color: COLORS.sand, fontWeight: "400" }}>$138</p>
+                </div>
+              </div>
+              <div style={{ borderTop: `1px solid rgba(255,255,255,0.15)`, paddingTop: "24px", marginBottom: "32px" }}>
+                {["Signature Sculpt Bodysuit", "SmoothFit Seamless Bra", "CurveSoft High-Waist Brief", "SculptEase Shaping Shorts"].map(item => (
+                  <div key={item} style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: COLORS.sand, flexShrink: 0 }} />
+                    <span className="sans" style={{ fontSize: "14px", color: COLORS.nudeDeep, fontWeight: "300" }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <button style={{ width: "100%", background: COLORS.sand, color: COLORS.mochaDark, border: "none", cursor: "pointer", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "'Jost', sans-serif", fontSize: "11px", fontWeight: "500", padding: "14px 36px", transition: "all 0.2s" }}>Shop This Bundle</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. Size Inclusivity ── */}
+      <section style={{ background: `linear-gradient(135deg, ${COLORS.nudeDeep} 0%, ${COLORS.sand} 100%)`, padding: "90px 32px" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
+          <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.mochaDark, opacity: 0.7, marginBottom: "16px" }}>Inclusive Sizing</p>
+          <h2 className="serif" style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: "300", color: COLORS.mochaDark, marginBottom: "24px", letterSpacing: "-0.5px" }}>
+            Designed for<br /><em>Every Body</em>
+          </h2>
+          <p className="sans" style={{ fontSize: "16px", color: COLORS.mochaDark, opacity: 0.75, lineHeight: "1.75", marginBottom: "44px", fontWeight: "300" }}>
+            Because confidence has no size. Our collection runs from XS to 3XL, with skin-tone shades crafted for every complexion.
+          </p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", marginBottom: "44px" }}>
+            {SIZES.map(size => (
+              <button key={size} className="size-pill" style={{ borderColor: COLORS.mochaDark + "60" }}>{size}</button>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            {[["Nude", COLORS.nude], ["Dark Nude", COLORS.nudeDeep], ["Brown", COLORS.mocha], ["Black", COLORS.mochaDark]].map(([name, color]) => (
+              <div key={name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+                <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: color, border: `2px solid rgba(255,255,255,0.5)` }} />
+                <span className="sans" style={{ fontSize: "9px", letterSpacing: "1px", color: COLORS.mochaDark, textTransform: "uppercase" }}>{name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8. Reviews ── */}
+      <section style={{ background: COLORS.cream, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
+            <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.warmGray, marginBottom: "12px" }}>Real Women, Real Results</p>
+            <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: "300", color: COLORS.mochaDark }}>
+              The Senashaps Community
+            </h2>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "16px" }}>
+              <StarRating stars={5} />
+              <span className="sans" style={{ fontSize: "13px", color: COLORS.warmGray }}>4.9 out of 5 · 2,400+ reviews</span>
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
+            {REVIEWS.map((review, i) => (
+              <div key={i} className="review-card">
+                <StarRating stars={review.stars} />
+                <p className="sans" style={{ fontSize: "14px", color: COLORS.charcoal, lineHeight: "1.8", margin: "16px 0 20px", fontWeight: "300" }}>
+                  "{review.text}"
+                </p>
+                <div style={{ borderTop: `1px solid ${COLORS.nude}`, paddingTop: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <p className="sans" style={{ fontSize: "12px", fontWeight: "500", color: COLORS.mochaDark }}>{review.name}</p>
+                    <p className="sans" style={{ fontSize: "10px", color: COLORS.warmGray, marginTop: "2px" }}>{review.size}</p>
+                  </div>
+                  {review.verified && (
+                    <span className="sans" style={{ fontSize: "9px", letterSpacing: "1px", textTransform: "uppercase", color: COLORS.accent, background: COLORS.lightBeige, padding: "3px 8px" }}>✓ Verified</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 9. Email Signup ── */}
+      <section style={{ background: COLORS.mochaDark, padding: "100px 32px" }}>
+        <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center" }}>
+          <div style={{ display: "inline-block", width: "40px", height: "1px", background: COLORS.sand, marginBottom: "32px" }} />
+          <p className="sans" style={{ fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", color: COLORS.sand, marginBottom: "20px" }}>Join the Club</p>
+          <h2 className="serif" style={{ fontSize: "clamp(32px, 4vw, 50px)", fontWeight: "300", color: COLORS.cream, marginBottom: "20px", lineHeight: "1.2" }}>
+            Join the Senashaps<br /><em>Confidence Club</em>
+          </h2>
+          <p className="sans" style={{ fontSize: "15px", color: COLORS.nudeDeep, marginBottom: "40px", lineHeight: "1.75", fontWeight: "300" }}>
+            Be the first to know about new drops, exclusive offers, and shaping tips.<br />
+            <strong style={{ color: COLORS.sand }}>Get 10% off your first order.</strong>
+          </p>
+          {subscribed ? (
+            <div style={{ background: "rgba(232,213,192,0.1)", border: `1px solid ${COLORS.sand}`, padding: "24px 32px", borderRadius: "2px" }}>
+              <p className="serif" style={{ color: COLORS.sand, fontSize: "22px", fontWeight: "300" }}>Welcome to the Confidence Club ✨</p>
+              <p className="sans" style={{ color: COLORS.nudeDeep, fontSize: "13px", marginTop: "8px" }}>Your 10% off code is on its way to your inbox.</p>
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: "0" }}>
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{ flex: 1, background: "rgba(255,255,255,0.06)", border: `1px solid rgba(255,255,255,0.15)`, borderRight: "none", padding: "16px 20px", color: COLORS.cream, fontSize: "14px", outline: "none", letterSpacing: "0.3px" }}
+              />
+              <button
+                className="btn-primary"
+                style={{ background: COLORS.sand, color: COLORS.mochaDark, whiteSpace: "nowrap", borderRadius: "0" }}
+                onClick={() => { if (email.includes("@")) setSubscribed(true); }}
+              >
+                Get 10% Off
+              </button>
+            </div>
+          )}
+          <p className="sans" style={{ fontSize: "11px", color: COLORS.nudeDeep, marginTop: "16px", opacity: 0.6 }}>
+            No spam. Unsubscribe anytime. By subscribing you agree to our Privacy Policy.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer style={{ background: COLORS.charcoal, padding: "72px 32px 40px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: "48px", marginBottom: "56px" }}>
+            {/* Brand */}
+            <div>
+              <div className="serif" style={{ fontSize: "22px", fontWeight: "300", letterSpacing: "6px", textTransform: "uppercase", color: COLORS.cream, marginBottom: "20px" }}>SENASHAPS</div>
+              <p className="sans" style={{ fontSize: "14px", color: COLORS.nudeDeep, lineHeight: "1.8", fontWeight: "300", maxWidth: "280px" }}>Premium shaping essentials for every woman. Smooth, support, and celebrate your curves — every single day.</p>
+              <div style={{ display: "flex", gap: "16px", marginTop: "28px" }}>
+                {["Instagram", "TikTok", "Pinterest"].map(s => (
+                  <span key={s} className="sans" style={{ fontSize: "10px", letterSpacing: "1.5px", color: COLORS.sand, textTransform: "uppercase", cursor: "pointer" }}>{s}</span>
+                ))}
+              </div>
+            </div>
+            {/* Shop */}
+            <div>
+              <p className="sans" style={{ fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.sand, marginBottom: "20px" }}>Shop</p>
+              {["Shop All", "Bodysuits", "Bras", "Underwear", "Sculpting Shorts", "Sets & Bundles", "Best Sellers"].map(link => (
+                <p key={link} className="sans" style={{ fontSize: "13px", color: COLORS.nudeDeep, marginBottom: "10px", cursor: "pointer", fontWeight: "300" }}>{link}</p>
+              ))}
+            </div>
+            {/* Help */}
+            <div>
+              <p className="sans" style={{ fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.sand, marginBottom: "20px" }}>Help</p>
+              {["Size Guide", "Shipping Policy", "Return Policy", "Contact Us", "FAQ", "About Senashaps"].map(link => (
+                <p key={link} className="sans" style={{ fontSize: "13px", color: COLORS.nudeDeep, marginBottom: "10px", cursor: "pointer", fontWeight: "300" }}>{link}</p>
+              ))}
+            </div>
+            {/* Newsletter mini */}
+            <div>
+              <p className="sans" style={{ fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: COLORS.sand, marginBottom: "20px" }}>Stay Connected</p>
+              <p className="sans" style={{ fontSize: "13px", color: COLORS.nudeDeep, marginBottom: "20px", lineHeight: "1.7", fontWeight: "300" }}>Get early access to new drops and members-only offers.</p>
+              <input type="email" placeholder="Your email" style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: `1px solid rgba(255,255,255,0.12)`, padding: "12px 16px", color: COLORS.cream, fontSize: "13px", outline: "none", marginBottom: "10px" }} />
+              <button className="btn-primary" style={{ width: "100%", fontSize: "10px" }}>Subscribe</button>
+            </div>
+          </div>
+          <div style={{ borderTop: `1px solid rgba(255,255,255,0.08)`, paddingTop: "28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <p className="sans" style={{ fontSize: "11px", color: COLORS.warmGray }}>© 2026 Senashaps. All rights reserved.</p>
+            <div style={{ display: "flex", gap: "24px" }}>
+              {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(link => (
+                <span key={link} className="sans" style={{ fontSize: "11px", color: COLORS.warmGray, cursor: "pointer" }}>{link}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
